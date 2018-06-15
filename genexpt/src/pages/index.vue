@@ -105,80 +105,8 @@
         </q-tab-pane>
                 <!-- TESTING Tab -->
         <q-tab-pane name="test">Test tab
-          <q-card class="q-ma-xl">
-            <q-card-title>Principal Investigator(s)
-              <span slot="subtitle">Information concerning the principal investigators
-                <br>
-                <br>
-              <q-btn class="q-ml-md" round size="sm" color="primary" icon="add" @click.native="addRowInvestigator" />
-              </span>
-            </q-card-title>
+          <q-card class="bg-cyan-2  q-ma-xl">
             <q-card-main>
-              <div>
-                <div>
-                  <div class="row gutter-lg" id="investigator-form">
-                    <div class="col-xs-4 col-md-4 col-lg-6">
-                      <q-list highlight v-for="(input, index) in inputs" :key="input.id">
-                        <q-item>
-                          <q-btn round size="sm" color="negative" icon="remove" @click.native="removeRowInvestigator(index)" />
-                        </q-item>
-                          <q-item class="q-pr-sm">
-                            <q-item-main label="Name & Title:" helper="Principal Investigator Name/Title" />
-                            <q-input type="text" v-model="input.one" placeholder="NAME/TITLE" clearable/> {{ input.one }}
-                          </q-item>
-                          <q-item>
-                            <q-item-main label="Contact:" />
-                            <q-input type="textarea" v-model="input.two" rows=3 id="contact-investigator-form" placeholder="CONTACT" clearable/> {{ input.two }}
-                          </q-item>
-                          <q-item>
-                            <q-item-main label="Institution:" />
-                            <q-input type="textarea" placeholder="INSTITUTION" v-model="input.three" clearable /> {{ input.three }}
-                          </q-item>
-                      </q-list>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div id="repeat-after-Investigator"></div>
-            </q-card-main>
-          </q-card>
-          <q-card class="bg-cyan-2 q-ma-xl">
-              <q-card-title>Institution(s)
-              <span slot="subtitle">Institutions that the data might or might not be shared with
-                <br>
-                <br>
-              <q-btn class="q-ml-md" round size="sm" color="primary" icon="add" @click.native="addRowInvestigator" />
-              </span>
-            </q-card-title>
-            <q-card-main>
-              <div>
-                <div>
-                  <div class="row gutter-lg" id="institution-form">
-                    <div class="col-xs-4 col-md-4 col-lg-6">
-                      <q-list highlight v-for="(input, index) in inputs" :key="input.id">
-                        <q-item>
-                          <q-btn round size="sm" color="negative" icon="remove" @click.native="removeRowInvestigator(index)" />
-                        </q-item>
-                          <q-item class="q-pr-sm">
-                            <q-item-main label="Name of Institution:" helper="Principal Investigator Name/Title" />
-                            <q-input type="text" v-model="input.one" placeholder="NAME/TITLE" clearable/> {{ input.one }}
-                          </q-item>
-                          <q-item>
-                            <q-item-main label="Contact Details of Institution:" />
-                            <q-input type="textarea" v-model="input.two" rows=3 id="contact-investigator-form" placeholder="CONTACT" clearable/> {{ input.two }}
-                          </q-item>
-                          <q-item>
-                            <q-item-main label="Data Access:" />
-                            <q-radio v-model="radio1" val="one" color="secondary" label="NO" />
-                            <q-radio v-model="radio1" val="two" color="amber" label="ANON" />
-                            <q-radio v-model="radio1" val="three" color="red" label="FULL" />
-                          </q-item>
-                      </q-list>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div id="repeat-after-Investigator"></div>
             </q-card-main>
           </q-card>
         </q-tab-pane>
