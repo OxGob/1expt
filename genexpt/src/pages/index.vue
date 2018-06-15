@@ -14,33 +14,57 @@
             </q-card-title>
             <q-card-main>
               <q-field label="Title" helper="Short name of the study">
-                <q-input v-model="studyTitle" clearable />
+                <q-input v-model="text" clearable />
               </q-field>
               <q-field label="Description" helper="Layman's description of the study">
-                <q-input v-model="studyDescription" type="textarea" rows="7" clearable />
+                <q-input v-model="area" type="textarea" rows="7" clearable />
               </q-field>
             </q-card-main>
           </q-card>
           <!-- Gen Info Tab: Principal Investigator Card -->
           <q-card class="bg-cyan-2 q-ma-xl">
-             <q-card-title>Principal Investigator(s)
-              <span slot="subtitle">Information concerning the principal investigators</span>
+            <q-card-title>Principal Investigator(s)
+              <span slot="subtitle">Information concerning the principal investigators:</span>
             </q-card-title>
             <q-card-main>
-              <q-field label="Name & Title" helper="Principal Investigator Name/Title">
-                <q-input v-model="principalInvestigatorNameTitle" clearable />
-              </q-field>
-              <q-field label="Contact" helper="Contact Details, may include address">
-                <q-input v-model="principalInvestigatorContactDetails" clearable />
-              </q-field>
-              <q-field label="Institution" helper="Name of Institution involved in study">
-                <q-input v-model="principalInvestigatorInstitution" clearable />
-              </q-field>
+              <div v-for="(principalInvestigator, index) in principalInvestigators" :key="principalInvestigator.id">
+                <q-field label="Name & Title:" helper="Principal Investigator Name & Title">
+                  <q-input v-model="principalInvestigator.nameTitleOfInvestigator" type="text" clearable />
+                </q-field>
+                <q-field label="Contact:" helper="Contact Details, may include address">
+                  <q-input v-model="principalInvestigator.contactDetailsOfInvestigator" type="textarea" rows="4" clearable />
+                </q-field>
+                <q-field label="Institution:" helper="Name of Institution involved in study">
+                  <q-input v-model="principalInvestigator.institutionOfInvestigator" type="textarea" rows="2"  clearable />
+                </q-field>
+                <q-btn class="q-ml-md q-mt-lg" v-show="showRemoveButton" round size="sm" color="negative" icon="remove" @click="removeRowInvestigator(index)" />
+                <q-btn class="float-right q-mt-lg" round size="sm" color="primary" icon="add" @click="addRowInvestigator(index)" />
+                <q-card-separator class="q-mb-md q-mt-md"/>
+              </div>
             </q-card-main>
           </q-card>
-          <!-- Gen Info Tab: Institutions Card To implement lists with button -->
+          <!-- Gen Info Tab: Institutions Card -->
           <q-card class="bg-cyan-2 q-ma-xl">
+            <q-card-title>Institution(s)
+              <span slot="subtitle">Institutions that the data might or might not be shared with:</span>
+            </q-card-title>
             <q-card-main>
+              <div v-for="(institution, index) in institutions" :key="institution.id">
+                <q-field label="Name of Institution:" helper="Please enter the name of the institution">
+                  <q-input v-model="institution.nameOfInstitution" type="text" clearable />
+                </q-field>
+                <q-field label="Contact:" helper="Contact Details of the institution, may include address">
+                  <q-input v-model="institution.contactOfInstitution" type="textarea" rows="4" clearable />
+                </q-field>
+                <q-field class="q-mt-md" label="Data Access:" helper="Data access per institution. Please select the level of access to grant or not.">
+                  <q-radio v-model="institution.radioDataAccessInstitution" val="no" color="secondary" label="NO" />
+                  <q-radio v-model="institution.radioDataAccessInstitution" val="anon" color="anon" label="ANON" />
+                  <q-radio v-model="institution.radioDataAccessInstitution" val="full" color="full" label="FULL" />
+                </q-field>
+                <q-btn class="q-ml-md q-mt-lg" v-show="showRemoveButton" round size="sm" color="negative" icon="remove" @click="removeRowInstitution(index)" />
+                <q-btn class="float-right q-mt-lg" round size="sm" color="primary" icon="add" @click="addRowInstitution(index)" />
+                <q-card-separator class="q-mb-md q-mt-md"/>
+              </div>
             </q-card-main>
           </q-card>
           <!-- Gen Info Tab: Date Card -->
@@ -224,16 +248,16 @@ export default {
       dateEnd: null,
       principalInvestigators: [
         {
-          nameTitle: '',
-          contactDetails: '',
-          institution: ''
+          nameTitleOfInvestigator: '',
+          contactDetailsOfInvestigator: '',
+          institutionOfInvestigator: ''
         }
       ],
       institutions: [
         {
           nameOfInstitution: '',
           contactOfInstitution: '',
-          radioDataAccess: ''
+          radioDataAccessInstitution: ''
         }
       ]
     }
