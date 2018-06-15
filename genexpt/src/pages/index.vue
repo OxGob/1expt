@@ -3,7 +3,8 @@
       <q-tabs color="secondary" glossy align="justify">
         <q-tab slot="title" default name="generalities" icon="subject" label="Generalities" />
         <q-tab slot="title" name="test" icon="verified_user" label="Test"/>
-        <q-tab slot="title" name="test2" icon="verified_user" label="Test2"/>
+        <q-tab slot="title" name="test2" icon="verified_user" label="Tab Inv"/>
+        <q-tab slot="title" name="test3" icon="verified_user" label="Tab Inst"/>
         <!-- General Tab -->
         <q-tab-pane name="generalities">Gen tab
           <!-- General Information Tab Card -->
@@ -158,24 +159,45 @@
           </q-card>
         </q-tab-pane>
         <!-- TESTING Tab 2 -->
-        <q-tab-pane name="test2">Test tab2
+        <q-tab-pane name="test2">Tab Inv
           <q-card class="q-ma-xl">
             <q-card-title>Principal Investigator(s)
               <span slot="subtitle">Information concerning the principal investigators:</span>
             </q-card-title>
             <q-card-main>
               <div v-for="(principalInvestigator, index) in principalInvestigators" :key="principalInvestigator.id">
-                <q-field label="Name & Title" helper="Principal Investigator Name & Title">
+                <q-field label="Name & Title:" helper="Principal Investigator Name & Title">
                   <q-input v-model="principalInvestigator.nameTitle" type="text" clearable />
                 </q-field>
-                <q-field label="Contact" helper="Contact Details, may include address">
+                <q-field label="Contact:" helper="Contact Details, may include address">
                   <q-input v-model="principalInvestigator.contactDetails" type="textarea" rows="4" clearable />
                 </q-field>
-                <q-field label="Institution" helper="Name of Institution involved in study">
+                <q-field label="Institution:" helper="Name of Institution involved in study">
                   <q-input v-model="principalInvestigator.institution" type="textarea" rows="2"  clearable />
                 </q-field>
                 <q-btn class="q-ml-md q-mt-lg" v-show="showRemoveButton" round size="sm" color="negative" icon="remove" @click="removeRowInvestigator(index)" />
                 <q-btn class="float-right q-mt-lg" round size="sm" color="primary" icon="add" @click="addRowInvestigator(index)" />
+                <q-card-separator class="q-mb-md q-mt-md"/>
+              </div>
+            </q-card-main>
+          </q-card>
+        </q-tab-pane>
+        <!-- TESTING Tab 3 -->
+        <q-tab-pane name="test3">Tab Inst
+          <q-card class="q-ma-xl">
+            <q-card-title>Institution(s)
+              <span slot="subtitle">Institutions that the data might or might not be shared with:</span>
+            </q-card-title>
+            <q-card-main>
+              <div v-for="(institution, index) in institutions" :key="institution.id">
+                <q-field label="Name of Institution:" helper="Please enter the name of the institution">
+                  <q-input v-model="institution.nameOfInstitution" type="text" clearable />
+                </q-field>
+                <q-field label="Contact:" helper="Contact Details of the institution, may include address">
+                  <q-input v-model="institution.contactOfInstitution" type="textarea" rows="4" clearable />
+                </q-field>
+                <q-btn class="q-ml-md q-mt-lg" v-show="showRemoveButton" round size="sm" color="negative" icon="remove" @click="removeRowInstitution(index)" />
+                <q-btn class="float-right q-mt-lg" round size="sm" color="primary" icon="add" @click="addRowInstitution(index)" />
                 <q-card-separator class="q-mb-md q-mt-md"/>
               </div>
             </q-card-main>
@@ -201,6 +223,12 @@ export default {
           contactDetails: '',
           institution: ''
         }
+      ],
+      institutions: [
+        {
+          nameOfInstitution: '',
+          contactOfInstitution: ''
+        }
       ]
     }
   },
@@ -222,6 +250,16 @@ export default {
     },
     removeRowInvestigator (index) {
       this.principalInvestigators.splice(index, 1)
+    },
+    addRowInstitution (index) {
+      // increment the id
+      this.institutions.push({
+        nameOfInstitution: '',
+        contactOfInstitution: ''
+      })
+    },
+    removeRowInstitution (index) {
+      this.institutions.splice(index, 1)
     },
     convertToJSON () {
       this.$q.notify('Convert to JSON')
