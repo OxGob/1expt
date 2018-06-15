@@ -165,17 +165,17 @@
             </q-card-title>
             <q-card-main>
               <div v-for="(principalInvestigator, index) in principalInvestigators" :key="principalInvestigator.id">
-                <q-btn class="q-ml-md" round size="sm" color="primary" icon="add" @click.native="addRowInvestigator(index)" />
-                <q-btn class="float-right" round size="sm" color="negative" icon="remove" @click.native="removeRowInvestigator(index)" />
-                <q-field label="Name & Title" helper="Principal Investigator Name/Title">
+                <q-field label="Name & Title" helper="Principal Investigator Name & Title">
                   <q-input v-model="principalInvestigator.nameTitle" type="text" clearable />
                 </q-field>
                 <q-field label="Contact" helper="Contact Details, may include address">
-                  <q-input v-model="principalInvestigator.contactDetails" type="text"  clearable />
+                  <q-input v-model="principalInvestigator.contactDetails" type="textarea" rows="4" clearable />
                 </q-field>
                 <q-field label="Institution" helper="Name of Institution involved in study">
-                  <q-input v-model="principalInvestigator.institution" type="text"  clearable />
+                  <q-input v-model="principalInvestigator.institution" type="textarea" rows="2"  clearable />
                 </q-field>
+                <q-btn class="q-ml-md q-mt-lg" v-show="showRemoveButton" round size="sm" color="negative" icon="remove" @click="removeRowInvestigator(index)" />
+                <q-btn class="float-right q-mt-lg" round size="sm" color="primary" icon="add" @click="addRowInvestigator(index)" />
                 <q-card-separator class="q-mb-md q-mt-md"/>
               </div>
             </q-card-main>
@@ -187,11 +187,10 @@
 
 <script>
 
-// var globalGridRowId = 0
-
 export default {
   data () {
     return {
+      showRemoveButton: true,
       studyTitle: '',
       studyDescription: '',
       dateStart: null,
@@ -213,6 +212,13 @@ export default {
         contactDetails: '',
         institution: ''
       })
+
+      this.$q.notify('the index is: ' + index)
+      if (index[1]) {
+        this.showRemoveButton = true
+      }
+      // if current index is zero, don't show remove button
+      // show remove button for index [1]
     },
     removeRowInvestigator (index) {
       this.principalInvestigators.splice(index, 1)
