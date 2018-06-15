@@ -196,6 +196,11 @@
                 <q-field label="Contact:" helper="Contact Details of the institution, may include address">
                   <q-input v-model="institution.contactOfInstitution" type="textarea" rows="4" clearable />
                 </q-field>
+                <q-field class="q-mt-md" label="Data Access:" helper="Data access per institution. Please select the level of access to grant or not.">
+                  <q-radio v-model="institution.radioDataAccess" val="no" color="secondary" label="NO" />
+                  <q-radio v-model="institution.radioDataAccess" val="anon" color="anon" label="ANON" />
+                  <q-radio v-model="institution.radioDataAccess" val="full" color="full" label="FULL" />
+                </q-field>
                 <q-btn class="q-ml-md q-mt-lg" v-show="showRemoveButton" round size="sm" color="negative" icon="remove" @click="removeRowInstitution(index)" />
                 <q-btn class="float-right q-mt-lg" round size="sm" color="primary" icon="add" @click="addRowInstitution(index)" />
                 <q-card-separator class="q-mb-md q-mt-md"/>
@@ -227,7 +232,8 @@ export default {
       institutions: [
         {
           nameOfInstitution: '',
-          contactOfInstitution: ''
+          contactOfInstitution: '',
+          radioDataAccess: ''
         }
       ]
     }
