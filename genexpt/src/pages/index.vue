@@ -14,10 +14,10 @@
             </q-card-title>
             <q-card-main>
               <q-field label="Title" helper="Short name of the study">
-                <q-input v-model="text" clearable />
+                <q-input v-model="studyTitle" clearable />
               </q-field>
               <q-field label="Description" helper="Layman's description of the study">
-                <q-input v-model="area" type="textarea" rows="7" clearable />
+                <q-input v-model="studyDescription" type="textarea" rows="7" clearable />
               </q-field>
             </q-card-main>
           </q-card>
@@ -99,7 +99,7 @@
               </div>
             </q-card-main>
           </q-card>
-          <q-btn color="negative" class="float-right"  size="lg" label="SUBMIT" @click="convertToJSON">
+          <q-btn color="negative" class="float-right"  size="lg" label="SUBMIT" @click="submitButtonClicked">
           </q-btn>
           <!-- Gen Info Tab: Submit Test Button -->
         </q-tab-pane>
@@ -191,6 +191,9 @@ export default {
       ]
     }
   },
+  validations: {
+    studyTitle: { required }
+  },
   methods: {
     addRowInvestigator (index) {
       // increment the id
@@ -220,8 +223,11 @@ export default {
     removeRowInstitution (index) {
       this.institutions.splice(index, 1)
     },
-    convertToJSON () {
-      this.$q.notify('Convert to JSON')
+    submitButtonClicked () {
+      this.$v.$touch()
+      if (!this.$v.studyTitle.required) {
+        this.$q.notify('Error not submitted')
+      }
     }
   }
 }
