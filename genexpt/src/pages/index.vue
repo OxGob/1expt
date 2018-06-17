@@ -119,7 +119,7 @@
             <q-card-main>
               <div v-for="(principalInvestigator, index) in principalInvestigators" :key="principalInvestigator.id">
                 <div>
-                  <q-btn class="vertical-top" v-show="showRemoveButton" round size="sm" color="negative" icon="remove" @click="removeRowInvestigator(index)" />
+                  <q-btn class="vertical-top" v-show="index !==0" round size="sm" color="negative" icon="remove" @click="removeRowInvestigator(index)" />
                 </div>
                 <q-field label="Name & Title:" helper="Principal Investigator Name & Title">
                   <q-input v-model="principalInvestigator.nameTitle" type="text" clearable />
@@ -172,7 +172,6 @@ import { required } from 'vuelidate/lib/validators'
 export default {
   data () {
     return {
-      showRemoveButton: false,
       studyTitle: '',
       studyDescription: '',
       dateStart: null,
@@ -204,13 +203,7 @@ export default {
         contactDetails: '',
         institution: ''
       })
-
       this.$q.notify('the index is: ' + index)
-      if (index[1]) {
-        this.showRemoveButton = true
-      }
-      // if current index is zero, don't show remove button
-      // show remove button for index [1]
     },
     removeRowInvestigator (index) {
       this.principalInvestigators.splice(index, 1)
