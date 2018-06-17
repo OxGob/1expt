@@ -118,6 +118,9 @@
             </q-card-title>
             <q-card-main>
               <div v-for="(principalInvestigator, index) in principalInvestigators" :key="principalInvestigator.id">
+                <div>
+                  <q-btn class="vertical-top" v-show="showRemoveButton" round size="sm" color="negative" icon="remove" @click="removeRowInvestigator(index)" />
+                </div>
                 <q-field label="Name & Title:" helper="Principal Investigator Name & Title">
                   <q-input v-model="principalInvestigator.nameTitle" type="text" clearable />
                 </q-field>
@@ -127,9 +130,8 @@
                 <q-field label="Institution:" helper="Name of Institution involved in study">
                   <q-input v-model="principalInvestigator.institution" type="textarea" rows="2"  clearable />
                 </q-field>
-                <q-btn class="q-ml-md q-mt-lg" v-show="showRemoveButton" round size="sm" color="negative" icon="remove" @click="removeRowInvestigator(index)" />
-                <q-btn class="float-right q-mt-lg" round size="sm" color="primary" icon="add" @click="addRowInvestigator(index)" />
-                <q-card-separator class="q-mb-md q-mt-md"/>
+                <q-btn class="float-right q-mt-sm" round size="sm" color="primary" icon="add" @click="addRowInvestigator(index)" />
+                <q-card-separator class="q-mb-md q-mt-xl"/>
               </div>
             </q-card-main>
           </q-card>
@@ -170,7 +172,7 @@ import { required } from 'vuelidate/lib/validators'
 export default {
   data () {
     return {
-      showRemoveButton: true,
+      showRemoveButton: false,
       studyTitle: '',
       studyDescription: '',
       dateStart: null,
