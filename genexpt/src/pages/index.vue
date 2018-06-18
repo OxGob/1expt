@@ -131,18 +131,18 @@
                         <q-field label="Age Range"/>
                     </div>
                     <div class="col-xs-4 col-md-4">
-                        <q-input v-model="ageMin" type="number" placeholder="Min Age1" clearable/>
+                        <q-input v-model="ageRangeMin" type="number" placeholder="Minimum Age of participants" clearable/>
                     </div>
                     <div class="col-xs-4 col-md-4">
-                        <q-input v-model="ageMax" type="number" placeholder="Max Age1" clearable/>
+                        <q-input v-model="ageRangeMax" type="number" placeholder="Maximum Age of participants" @input="checkMaxAge(ageRangeMin, ageRangeMax)" clearable/>
                     </div>
                     <div class="col-xs-4 col-md-4">
                       <q-field label="Sex" />
                     </div>
                     <div class="col-xs-4 col-md-4">
-                      <q-checkbox class="q-mr-lg" v-model="checkArrayAge" label="M" color="secondary" val="one" />
-                      <q-checkbox class="q-mr-lg" v-model="checkArrayAge" label="F" val="two" color="secondary" />
-                      <q-checkbox v-model="checkArrayAge" label="OTHER" val="three" color="secondary" />
+                      <q-checkbox class="q-mr-lg" v-model="checkArrayGender" label="M" color="secondary" val="genderMale" />
+                      <q-checkbox class="q-mr-lg" v-model="checkArrayGender" label="F" val="two" color="genderFemale" />
+                      <q-checkbox v-model="checkArrayGender" label="OTHER" val="three" color="genderOther" />
                     </div>
                   </div>
                 </div>
@@ -284,9 +284,9 @@ export default {
           radioDataAccessInstitution: ''
         }
       ],
-      ageMin: null,
-      ageMax: null,
-      checkArrayAge: ['one'],
+      ageRangeMin: null,
+      ageRangeMax: null,
+      checkArrayGender: ['genderMale'],
       radio_lifestyle: 'Active'
     }
   },
@@ -322,6 +322,12 @@ export default {
       if (Date.parse(dateStart) > Date.parse(dateEnd)) {
         this.$q.notify('The End Date of the study is before the Start Date. Please re-enter the End Date.')
         this.dateEnd = ''
+      }
+    },
+    checkMaxAge (ageRangeMin, ageRangeMax) {
+      if (ageRangeMax < ageRangeMin) {
+        this.$q.notify('The maximum age of the participant is less than the minimum age. Please re-enter the maximum age.')
+        this.ageRangeMax = ''
       }
     },
     submitButtonClicked () {
