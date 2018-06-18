@@ -14,8 +14,10 @@
             </q-card-title>
             <q-card-main>
               <q-field label="Title" helper="Short name of the study">
-                <q-input v-model="studyTitle" clearable />
-                <p v-if="!$v.studyTitle.required">The email field is required!</p>
+                <q-input v-model="studyTitle" @input="$v.studyTitle.$touch()" clearable></q-input>
+                <div v-if="$v.studyTitle.$dirty">
+                  <p v-if="!$v.studyTitle.required" class="text-negative">The title field is required!</p>
+                </div>
               </q-field>
               <q-field label="Description" helper="Layman's description of the study">
                 <q-input v-model="studyDescription" type="textarea" rows="7" clearable />
