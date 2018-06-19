@@ -225,6 +225,28 @@
         <q-tab-pane name="test2">Tab ?
           <q-card class="bg-cyan-2 q-ma-xl">
           <q-card-main />
+        <div v-if="loading">
+          <img src="/src/assets/loader.gif"/>
+          Loading.....
+        </div>
+
+        <h2>Click the button to get Random jokes</h2>
+        <button id="btn" class="" v-on:click="getJokes">Get Jokes</button>
+
+          <div class="wrapper">
+            <div class="row">
+              <div v-for="joke in jokes" :key="joke.id">
+              <div class="col-md-4 cards">
+                <img src="https://placeimg.com/300/300/nature" class="img-responsive" alt="Random images placeholder">
+                <div>
+                  <h3>{{ joke.id }}</h3>
+                  <p>{{ joke.joke }}</p>
+                  <p>{{ joke.category }}</p>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
           </q-card>
         </q-tab-pane>
       </q-tabs>
@@ -233,6 +255,7 @@
 
 <script>
 import { required, between } from 'vuelidate/lib/validators'
+import axios from 'axios'
 
 export default {
   data () {
@@ -264,7 +287,9 @@ export default {
           titleOfCriteriaQuestion: '',
           criteriaQAnswer: ''
         }
-      ]
+      ],
+      jokes: [],
+      loading: false
     }
   },
   validations: {
@@ -275,6 +300,17 @@ export default {
     ageRangeMax: { between: between(0, 140) }
   },
   methods: {
+    getJokes () {
+      this.loading = true
+      axios.get('http://api.icndb.com/jokes/random/10')
+        .then((response) => {
+          this.loading = false
+          this.jokes = response.data.value
+        }, (error) => {
+          console.log(error)
+          this.loading = false
+        })
+    },
     addRowInvestigator (index) {
       // increment the id
       this.principalInvestigators.push({
