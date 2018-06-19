@@ -181,20 +181,23 @@
               </div>
             </q-card-main>
           </q-card>
+          <!-- Custom Criteria Questions -->
           <q-card class="bg-cyan-2 q-ma-xl">
+            <q-card-title>Custom Criteria Question(s)
+              <span slot="subtitle">Please enter additional criteria questions to filter the eligibility of the participants. The answers are yes/no.</span>
+            </q-card-title>
             <q-card-main>
-              <div>
-                <div>
-                  <!-- Custom Criteria Questions -->
-                  <div class="row gutter-lg">
-                    <div class="col-xs-4 col-md-4">
-                      <q-field label="Custom Criteria:" />
-                    </div>
-                    <div class="col-xs-4 col-md-6">
-                      <q-input type="text" id="disease-form" placeholder="Question Example:" />
-                    </div>
-                  </div>
-                </div>
+                 <div v-for="(criteriaQuestion, index) in criteriaQuestions" :key="criteriaQuestion.id">
+                <q-btn class="vertical-top" v-show="index !==0" round size="sm" color="negative" icon="remove" @click="removeRowCriteriaQuestion(index)" />
+                <q-field label="Criteria Question:" helper="Please enter a question. (e.g. Are you a smoker?)">
+                  <q-input v-model="criteriaQuestion.titleOfCriteriaQuestion" type="text" clearable />
+                </q-field>
+                <q-field class="q-mt-md" label="Participant Answer:" helper="Please select either yes or no.">
+                  <q-radio class="q-mr-lg" v-model="criteriaQuestion.criteriaQAnswer" val="yes" color="secondary" label="Yes" />
+                  <q-radio v-model="criteriaQuestion.criteriaQAnswer" val="no" color="full" label="No" />
+                </q-field>
+                <q-btn class="float-right q-mt-sm" round size="sm" color="primary" icon="add" @click="addRowCriteriaQuestion(index)" />
+                <q-card-separator class="q-mb-md q-mt-xl"/>
               </div>
             </q-card-main>
           </q-card>
@@ -289,7 +292,13 @@ export default {
       ageRangeMin: null,
       ageRangeMax: null,
       checkArrayGender: ['genderMale'],
-      radio_lifestyle: 'Active'
+      radio_lifestyle: 'Active',
+      criteriaQuestions: [
+        {
+          titleOfCriteriaQuestion: '',
+          criteriaQAnswer: ''
+        }
+      ]
     }
   },
   validations: {
@@ -321,6 +330,15 @@ export default {
     },
     removeRowInstitution (index) {
       this.institutions.splice(index, 1)
+    },
+    addRowCriteriaQuestion (index) {
+      // increment the id
+      this.criteriaQuestions.push({
+        criteriaQuestion: ''
+      })
+    },
+    removeRowCriteriaQuestion (index) {
+      this.criteriaQuestions.splice(index, 1)
     },
     checkEndDate (dateStart, dateEnd) {
       if (Date.parse(dateStart) > Date.parse(dateEnd)) {
