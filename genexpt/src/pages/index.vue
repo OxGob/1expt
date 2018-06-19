@@ -131,7 +131,6 @@
                         <q-field label="Age Range"/>
                     </div>
                     <div class="col-xs-4 col-md-4">
-                        <q-input v-model="ageRangeMin" type="number" placeholder="Minimum Age of participants" clearable/>
                         <q-input v-model="ageRangeMin" type="number" min="0" oninput="validity.valid||(value='')" placeholder="Minimum Age of participants" clearable/>
                          <div v-if="!$v.ageRangeMin.between" class="q-mt-sm text-negative"> The age is between 0 and 140.</div>
                     </div>
