@@ -132,17 +132,20 @@
                     </div>
                     <div class="col-xs-4 col-md-4">
                         <q-input v-model="ageRangeMin" type="number" placeholder="Minimum Age of participants" clearable/>
+                        <q-input v-model="ageRangeMin" type="number" min="0" oninput="validity.valid||(value='')" placeholder="Minimum Age of participants" clearable/>
+                         <div v-if="!$v.ageRangeMin.between" class="q-mt-sm text-negative"> The age is between 0 and 140.</div>
                     </div>
                     <div class="col-xs-4 col-md-4">
-                        <q-input v-model="ageRangeMax" type="number" placeholder="Maximum Age of participants" @input="checkMaxAge(ageRangeMin, ageRangeMax)" clearable/>
+                        <q-input v-model="ageRangeMax" type="number" min="0" oninput="validity.valid||(value='')" placeholder="Maximum Age of participants" @input="checkMaxAge(ageRangeMin, ageRangeMax)" clearable/>
+                          <div v-if="!$v.ageRangeMax.between" class="q-mt-sm text-negative"> The age is between 0 and 140.</div>
                     </div>
                     <div class="col-xs-4 col-md-4">
                       <q-field label="Sex" />
                     </div>
                     <div class="col-xs-4 col-md-4">
                       <q-checkbox class="q-mr-lg" v-model="checkArrayGender" label="M" color="secondary" val="genderMale" />
-                      <q-checkbox class="q-mr-lg" v-model="checkArrayGender" label="F" val="two" color="genderFemale" />
-                      <q-checkbox v-model="checkArrayGender" label="OTHER" val="three" color="genderOther" />
+                      <q-checkbox class="q-mr-lg" v-model="checkArrayGender" label="F" color="secondary" val="genderFemale" />
+                      <q-checkbox v-model="checkArrayGender" label="OTHER" color="secondary" val="genderOther" />
                     </div>
                   </div>
                 </div>
@@ -166,7 +169,7 @@
                     </div>
                     <div class="col-xs-4 col-md-6">
                       <q-radio v-model="radio_lifestyle" val="active" color="secondary" label="Active" />
-                      <q-radio v-model="radio_lifestyle" val="not active" color="amber" label="Not Active" style="margin-left: 10px" />
+                      <q-radio v-model="radio_lifestyle" val="notActive" color="secondary" label="Not Active" style="margin-left: 10px" />
                     </div>
                     <div class="col-xs-4 col-md-4">
                       <q-field label="Meds" />
@@ -261,7 +264,7 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
+import { required, between } from 'vuelidate/lib/validators'
 
 export default {
   data () {
@@ -293,7 +296,9 @@ export default {
   validations: {
     studyTitle: { required },
     studyDescription: { required },
-    dateStart: { required }
+    dateStart: { required },
+    ageRangeMin: { between: between(0, 140) },
+    ageRangeMax: { between: between(0, 140) }
   },
   methods: {
     addRowInvestigator (index) {
