@@ -230,18 +230,16 @@
           Loading.....
         </div>
 
-        <h2>Click the button to get Random jokes</h2>
-        <button id="btn" class="" v-on:click="getJokes">Get Jokes</button>
+        <h5>Click the button for SNOMED</h5>
+        <button id="btn" class="" v-on:click="getDiseasesQuery">getSnomed Results</button>
 
           <div class="wrapper">
             <div class="row">
-              <div v-for="joke in jokes" :key="joke.id">
+              <div v-for="diseasesQueryResult in diseasesQueryResults" :key="diseasesQueryResult.id">
               <div class="col-md-4 cards">
-                <img src="https://placeimg.com/300/300/nature" class="img-responsive" alt="Random images placeholder">
                 <div>
-                  <h3>{{ joke.id }}</h3>
-                  <p>{{ joke.joke }}</p>
-                  <p>{{ joke.category }}</p>
+                  <h3>{{ diseasesQueryResult.id }}</h3>
+                  <p> {{diseasesQueryResult}}</p>
                 </div>
               </div>
             </div>
@@ -288,7 +286,7 @@ export default {
           criteriaQAnswer: ''
         }
       ],
-      jokes: [],
+      diseasesQueryResults: [],
       loading: false
     }
   },
@@ -300,12 +298,12 @@ export default {
     ageRangeMax: { between: between(0, 140) }
   },
   methods: {
-    getJokes () {
+    getDiseasesQuery () {
       this.loading = true
-      axios.get('http://api.icndb.com/jokes/random/10')
+      axios.get('http://browser.ihtsdotools.org/api/v1/snomed//en-edition/v20180131/descriptions?query=heart%20attack&limit=50&searchMode=partialMatching&lang=english&statusFilter=activeOnly&skipTo=0&returnLimit=100&normalize=true')
         .then((response) => {
           this.loading = false
-          this.jokes = response.data.value
+          this.diseasesQueryResults = response.data
         }, (error) => {
           console.log(error)
           this.loading = false
