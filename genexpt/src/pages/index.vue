@@ -213,7 +213,8 @@
                           <q-field label="Disease Choice" />
                         </div>
                         <div class="col-xs-4 col-md-6">
-                          <q-input type="text" id="disease-form" placeholder="Disease" />
+                          <q-input type="text" v-model="diseaseDescription" id="disease-form" placeholder="Disease" />
+                          <q-btn class="q-mt-md bg-white" label="Add Disease" @click="getDiseaseQuery(diseaseDescription)" />
                         </div>
                       </div>
                     </div>
@@ -226,12 +227,13 @@
           <q-card class="bg-cyan-2 q-ma-xl">
           <q-card-main />
         <div v-if="loading">
-          <img src="/src/assets/loader.gif"/>
+          <img src="/assets/loader.gif"/>
           Loading.....
         </div>
 
         <h5>Click the button for SNOMED</h5>
-        <button id="btn" class="" v-on:click="getDiseasesQuery">getSnomed Results</button>
+        <q-input type="text" v-model="diseaseDescription" id="disease-form" placeholder="Disease" />
+         <q-btn class="q-mt-md bg-white" label="Add Disease" @click="getDiseaseQuery(diseaseDescription)" />
 
           <div class="wrapper">
             <div class="row">
@@ -286,6 +288,7 @@ export default {
           criteriaQAnswer: ''
         }
       ],
+      diseaseDescription: '',
       diseasesQueryResults: [],
       loading: false
     }
@@ -298,9 +301,16 @@ export default {
     ageRangeMax: { between: between(0, 140) }
   },
   methods: {
-    getDiseasesQuery () {
+    getDiseaseQuery (diseaseDescription) {
+      // Declare top level URL vars
+      var baseUrl = 'http://browser.ihtsdotools.org/api/v1/snomed/'
+      var edition = 'en-edition'
+      var version = '20180131'
+      // Construct Disease Query URL
+      var diseaseQueryURL = baseUrl + '/' + edition + '/v' + version + '/descriptions?query=' + encodeURIComponent(diseaseDescription) + '&limit=50&searchMode=partialMatching' + '&lang=english&statusFilter=activeOnly&skipTo=0' + '&returnLimit=100&normalize=true'
       this.loading = true
-      axios.get('http://browser.ihtsdotools.org/api/v1/snomed//en-edition/v20180131/descriptions?query=heart%20attack&limit=50&searchMode=partialMatching&lang=english&statusFilter=activeOnly&skipTo=0&returnLimit=100&normalize=true')
+      // axios.get('http://browser.ihtsdotools.org/api/v1/snomed//en-edition/v20180131/descriptions?query=heart%20attack&limit=50&searchMode=partialMatching&lang=english&statusFilter=activeOnly&skipTo=0&returnLimit=100&normalize=true')
+      axios.get(diseaseQueryURL)
         .then((response) => {
           this.loading = false
           this.diseasesQueryResults = response.data
