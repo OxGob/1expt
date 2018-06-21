@@ -314,7 +314,7 @@ export default {
       axios.get(diseaseQueryURL)
         .then((response) => {
           this.loading = false
-          this.diseasesQueryResults = response.data
+          // this.diseasesQueryResults = response.data
           const dataDis = response.data
           const result = dataDis.matches.map((item) => {
             return {
@@ -322,6 +322,7 @@ export default {
               conceptId: item.conceptId
             }
           })
+          this.diseasesQueryResults = result
           console.log(result)
         }, (error) => {
           console.log(error)
