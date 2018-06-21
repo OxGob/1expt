@@ -216,6 +216,7 @@
                           <q-input type="text" v-model="diseaseDescription" id="disease-form" placeholder="Disease" />
                           <q-btn class="q-mt-md bg-white" label="Add Disease" @click="getDiseaseQuery(diseaseDescription)" />
                         </div>
+                        <p> These are the displayed resuts: {{diseasesQueryResults}}</p>
                       </div>
                     </div>
                   </div>
@@ -314,6 +315,14 @@ export default {
         .then((response) => {
           this.loading = false
           this.diseasesQueryResults = response.data
+          const dataDis = response.data
+          const result = dataDis.matches.map((item) => {
+            return {
+              term: item.term,
+              conceptId: item.conceptId
+            }
+          })
+          console.log(result)
         }, (error) => {
           console.log(error)
           this.loading = false
