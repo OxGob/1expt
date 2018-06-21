@@ -42,6 +42,7 @@ module.exports = function (ctx) {
     // framework: 'all' --- includes everything; for dev only!
     framework: {
       components: [
+        'QAutocomplete',
         'QBtn',
         'QBtnDropdown',
         'QCard',
@@ -51,6 +52,7 @@ module.exports = function (ctx) {
         'QCardSeparator',
         'QCardActions',
         'QCheckbox',
+        'QChipsInput',
         'QDatetime',
         'QField',
         'QIcon',
