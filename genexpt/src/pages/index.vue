@@ -216,7 +216,16 @@
                           <q-input type="text" v-model="diseaseDescription" id="disease-form" placeholder="Disease" />
                           <q-btn class="q-mt-md bg-white" label="Add Disease" @click="getDiseaseQuery(diseaseDescription)" />
                         </div>
-                        <p> These are the displayed resuts: {{diseasesQueryResults}}</p>
+                        <p> These are the displayed results: {{diseasesQueryResults}}</p>
+                        <q-list>
+                          <q-list-header inset>Please select:</q-list-header>
+                          <q-item>
+                            <q-item-side icon="folder" inverted color="primary" />
+                            <q-item-main>
+                              <q-select class="q-ma-none full-width" v-model="select" :options="selectOptions" />
+                            </q-item-main>
+                          </q-item>
+                        </q-list>
                       </div>
                     </div>
                   </div>
@@ -291,6 +300,8 @@ export default {
       ],
       diseaseDescription: '',
       diseasesQueryResults: [],
+      select: '',
+      selectOptions: '',
       loading: false
     }
   },
@@ -323,6 +334,7 @@ export default {
             }
           })
           this.diseasesQueryResults = result
+          this.selectOptions = result
           console.log(result)
         }, (error) => {
           console.log(error)
