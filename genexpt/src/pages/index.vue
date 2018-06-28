@@ -204,39 +204,23 @@
                 <!-- TESTING Tab -->
         <q-tab-pane name="test">Tab Diseases
           <q-card class="bg-cyan-2  q-ma-xl">
-          <!-- Disease, Lifestyle and Meds -->
+          <!-- Disease -->
             <q-card-main>
-              <q-chips-input v-model="meds" placeholder="Select from list or add new one" stack-label="List of Meds" @duplicate="duplicatedMeds">
-                <q-autocomplete @search="searchMeds" @selected="selectedMeds" />
+              <q-chips-input v-model="diseasesVue" placeholder="Select disease(s) from list" @duplicate="duplicatedDisease">
+                <q-autocomplete @search="searchDisease" @selected="selectedDisease" />
               </q-chips-input>
             </q-card-main>
             </q-card>
         </q-tab-pane>
         <!-- TESTING Tab 2 -->
-        <q-tab-pane name="test2">Tab ?
+         <!-- Meds -->
+        <q-tab-pane name="test2">Tab Meds
           <q-card class="bg-cyan-2 q-ma-xl">
-          <q-card-main />
-        <div v-if="loading">
-          <img src="/assets/loader.gif"/>
-          Loading.....
-        </div>
-
-        <h5>Click the button for SNOMED</h5>
-        <q-input type="text" v-model="diseaseDescription" id="disease-form" placeholder="Disease" />
-         <q-btn class="q-mt-md bg-white" label="Add Disease" @click="getDiseaseQuery(diseaseDescription)" />
-
-          <div class="wrapper">
-            <div class="row">
-              <div v-for="diseasesQueryResult in diseasesQueryResults" :key="diseasesQueryResult.id">
-              <div class="col-md-4 cards">
-                <div>
-                  <h3>{{ diseasesQueryResult.id }}</h3>
-                  <p> {{diseasesQueryResult}}</p>
-                </div>
-              </div>
-            </div>
-            </div>
-          </div>
+            <q-card-main>
+              <q-chips-input v-model="meds" placeholder="Select med(s) from list" @duplicate="duplicatedMeds">
+                <q-autocomplete @search="searchMeds" @selected="selectedMeds" />
+              </q-chips-input>
+            </q-card-main>
           </q-card>
         </q-tab-pane>
       </q-tabs>
@@ -295,6 +279,24 @@ export default {
     ageRangeMax: { between: between(0, 140) }
   },
   computed: {
+    diseasesVue: {
+      get: function () {
+        console.log('GET')
+        var keys = []
+        for (let key in this.diseases) {
+          keys.push(key)
+        }
+        console.log('GET', this.diseases)
+        return keys
+      },
+      set: function (keys) {
+        for (let key in this.diseases) {
+          // if key is not in keys, delete
+          if (!keys.includes(key)) delete this.diseases[key]
+        }
+        console.log('SET', this.diseases)
+      }
+    },
     medsVue: {
       get: function () {
         var keys = []
@@ -326,10 +328,10 @@ export default {
       axios.get(medQueryURL)
         .then((response) => {
           this.loading = false
-          // this.diseasesQueryResults = response.data
           const dataMed = response.data
           // needs to filter out those already selected
-          const result = dataMed.matches.map((item) => {
+          let resultsFilteredByNumberChars = dataMed.matches.filter(entry => entry['term'].length < 40)
+          const result = resultsFilteredByNumberChars.map((item) => {
             return {
               label: item.term,
               value: item.term,
@@ -351,7 +353,7 @@ export default {
     duplicatedMeds (label) {
       this.$q.notify(`"${label}" already in list`)
     },
-    getDiseaseQuery (diseaseDescription) {
+    searchDisease (diseaseDescription, done) {
       // Declare top level URL vars
       var baseUrl = 'http://browser.ihtsdotools.org/api/v1/snomed/'
       var edition = 'en-edition'
@@ -363,21 +365,29 @@ export default {
       axios.get(diseaseQueryURL)
         .then((response) => {
           this.loading = false
-          // this.diseasesQueryResults = response.data
           const dataDis = response.data
-          const result = dataDis.matches.map((item) => {
+          // TODO: needs to filter out those already selected
+          let resultsFilterByNumberChars = dataDis.matches.filter(entry => entry['term'].length < 50)
+          const result = resultsFilterByNumberChars.map((item) => {
             return {
-              term: item.term,
+              label: item.term,
+              value: item.term,
               conceptId: item.conceptId
             }
           })
-          this.diseasesQueryResults = result
-          this.selectOptions = result
-          console.log(result)
+          done(result)
         }, (error) => {
-          console.log(error)
+          this.$q.notify('There has been an error during the retrieval of this query. Please Try again.')
+          console.error(error)
           this.loading = false
         })
+    },
+    selectedDisease (item) {
+      this.diseases[item.label] = item.conceptId
+      console.log('SELECTED', this.diseases)
+    },
+    duplicatedDisease (label) {
+      this.$q.notify(`"${label}" already in list`)
     },
     addRowInvestigator (index) {
       // increment the id
