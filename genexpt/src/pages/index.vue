@@ -1,9 +1,9 @@
 <template>
   <q-page>
       <q-tabs color="secondary" glossy align="justify">
-        <q-tab slot="title" default name="generalities" icon="subject" label="Generalities" />
+        <q-tab slot="title" name="generalities" icon="subject" label="Generalities" />
         <q-tab slot="title" name="criteria" icon="fingerprint" label="Inclusion Criteria" />
-        <q-tab slot="title" name="test" icon="verified_user" label="Tab Disease"/>
+        <q-tab slot="title" default name="test" icon="verified_user" label="Tab Disease"/>
         <q-tab slot="title" name="test2" icon="verified_user" label="Tab Inst"/>
         <!-- General Tab -->
         <q-tab-pane name="generalities">Gen tab
@@ -268,7 +268,8 @@ export default {
       selectOptions: '',
       loading: false,
       medDescription: '',
-      meds: []
+      meds: {},
+      diseases: {}
     }
   },
   validations: {
