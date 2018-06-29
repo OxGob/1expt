@@ -3,8 +3,8 @@
       <q-tabs color="secondary" glossy align="justify">
         <q-tab slot="title" name="generalities" icon="subject" label="Generalities" />
         <q-tab slot="title" name="criteria" icon="fingerprint" label="Inclusion Criteria" />
-        <q-tab slot="title" default name="test" icon="verified_user" label="Tab Disease"/>
-        <q-tab slot="title" name="test2" icon="verified_user" label="Tab Inst"/>
+        <q-tab slot="title" name="test" icon="verified_user" label="Tab Disease"/>
+        <q-tab slot="title" default name="test2" icon="verified_user" label="Tab Inst"/>
         <!-- General Tab -->
         <q-tab-pane name="generalities">Gen tab
           <!-- General Information Tab Card -->
@@ -217,7 +217,7 @@
         <q-tab-pane name="test2">Tab Meds
           <q-card class="bg-cyan-2 q-ma-xl">
             <q-card-main>
-              <q-chips-input v-model="meds" placeholder="Select med(s) from list" @duplicate="duplicatedMeds">
+              <q-chips-input v-model="medsVue" placeholder="Select med(s) from list" @duplicate="duplicatedMeds">
                 <q-autocomplete @search="searchMeds" @selected="selectedMeds" />
               </q-chips-input>
             </q-card-main>
@@ -323,16 +323,24 @@ export default {
       var edition = 'en-edition'
       var version = '20180131'
       // Construct Meds Query URL
-      var medQueryURL = baseUrl + '/' + edition + '/v' + version + '/descriptions?query=' + encodeURIComponent(medDescription) + '&limit=50&searchMode=partialMatching' + '&lang=english&statusFilter=activeOnly&skipTo=0' + '&semanticFilter=disorder' + '&returnLimit=100&normalize=true'
+      var medQueryURL = baseUrl + '/' + edition + '/v' + version + '/descriptions?query=' + encodeURIComponent(medDescription) + '&limit=50&searchMode=partialMatching' + '&lang=english&statusFilter=activeOnly&skipTo=0' + '&semanticFilter=substance' + '&returnLimit=100&normalize=true'
       this.loading = true
       // axios.get('http://browser.ihtsdotools.org/api/v1/snomed//en-edition/v20180131/descriptions?query=heart%20attack&limit=50&searchMode=partialMatching&lang=english&statusFilter=activeOnly&skipTo=0&returnLimit=100&normalize=true')
       axios.get(medQueryURL)
         .then((response) => {
           this.loading = false
+          this.$q.notify('Selected MEDS from S:' + JSON.stringify(Object.keys(this.meds)))
           const dataMed = response.data
           // needs to filter out those already selected
-          let resultsFilteredByNumberChars = dataMed.matches.filter(entry => entry['term'].length < 40)
-          const result = resultsFilteredByNumberChars.map((item) => {
+          let resMedsFiltByLen = dataMed.matches.filter(entry => entry['term'].length < 40)
+          const selMeds = Object.keys(this.meds)
+          console.log('RemMeds1: ', selMeds)
+          var medsFil = resMedsFiltByLen.filter((entry) => !selMeds.includes(entry.term))
+          console.log('disFil1: ', medsFil.length)
+          if (medsFil.length === 0) {
+            this.$q.notify('There are no more matching items with the current terms. Please search for other meds.')
+          }
+          const result = medsFil.map((item) => {
             return {
               label: item.term,
               value: item.term,
