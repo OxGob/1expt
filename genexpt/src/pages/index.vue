@@ -366,10 +366,18 @@ export default {
       axios.get(diseaseQueryURL)
         .then((response) => {
           this.loading = false
+          this.$q.notify('Selected diseases from SEarch:' + JSON.stringify(Object.keys(this.diseases)))
           const dataDis = response.data
           // TODO: needs to filter out those already selected
-          let resultsFilterByNumberChars = dataDis.matches.filter(entry => entry['term'].length < 50)
-          const result = resultsFilterByNumberChars.map((item) => {
+          let resFiltByLen = dataDis.matches.filter(entry => entry['term'].length < 50)
+          const selDis = Object.keys(this.diseases)
+          console.log('RemDise1: ', selDis)
+          var disFil = resFiltByLen.filter((entry) => !selDis.includes(entry.term))
+          console.log('disFil1: ', disFil.length)
+          if (disFil.length === 0) {
+            this.$q.notify('There are no more matching items with the current terms. Please search for other diseases.')
+          }
+          const result = disFil.map((item) => {
             return {
               label: item.term,
               value: item.term,
