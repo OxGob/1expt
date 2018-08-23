@@ -5,7 +5,6 @@
         <q-tab slot="title" name="criteria" icon="fingerprint" label="Inclusion Criteria" />
         <q-tab slot="title" default name="tasks" icon="list" label="Tasks"/>
         <q-tab slot="title" name="consent" icon="verified_user" label="Consent"/>
-        <q-tab slot="title" name="test" icon="verified_user" label="Test"/>
         <!-- General Tab -->
         <q-tab-pane name="generalities">
           <!-- General Information Tab Card -->
@@ -335,16 +334,6 @@
               <q-field label="Privacy Message" helper="This the privacy policy for the study. It includes...">
                 <q-input v-model="privacyMessage" readonly type="textarea" rows="7"/>
               </q-field>
-            </q-card-main>
-          </q-card>
-        </q-tab-pane>
-                <!-- TESTING Tab -->
-        <q-tab-pane name="test">Test tab
-          <q-card class="bg-cyan-2 q-ma-xl">
-            <q-card-title>Component Testing</q-card-title>
-              <q-card-separator class="q-mb-md q-mt-xl"/>
-            <q-card-main>
-              <scheduler></scheduler>
             </q-card-main>
           </q-card>
         </q-tab-pane>
