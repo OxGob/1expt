@@ -1,6 +1,12 @@
 <template>
     <!-- General Tab -->
         <q-tab-pane name="generalities">
+          <div class="row">
+            <div class="col-6"></div>
+            <div class="col-6">
+              <q-btn class="float-right q-mr-md" color="red" icon-right="save" @click="saveGeneralities">Save Progress</q-btn>
+            </div>
+          </div>
           <!-- General Information Tab Card -->
           <q-card class="bg-cyan-2 q-ma-xl">
             <q-card-title>Generalities
@@ -138,6 +144,10 @@ export default {
     dateStart: { required }
   },
   methods: {
+    saveGeneralities () {
+      this.$q.notify('ave Gen: ' + this.studyTitle)
+      this.$emit('genObj', this.studyTitle)
+    },
     addRowInvestigator (index) {
       // increment the id
       this.principalInvestigators.push({

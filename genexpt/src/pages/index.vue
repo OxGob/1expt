@@ -7,7 +7,9 @@
         <q-tab slot="title" name="consent" icon="verified_user" label="Consent"/>
         <!-- General Tab -->
         <q-tab-pane name="generalities">
-          <coGen></coGen>
+          <keep-alive>
+            <coGen @genObj="objGeneralitites = $event"></coGen>
+          </keep-alive>
         </q-tab-pane>
         <!-- Criteria Tab -->
         <q-tab-pane name="criteria">
@@ -255,8 +257,7 @@ export default {
   },
   data () {
     return {
-      studyTitle: '',
-      studyDescription: '',
+      objGeneralitites: '',
       dateStart: null,
       dateEnd: null,
       principalInvestigators: [
